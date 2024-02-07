@@ -2,15 +2,32 @@ import CustomInput from "../components/Input";
 import Button from "../components/Button";
 import { useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 
 function AddProducts() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [price, setPrice] = useState();
 
-  function onFormSubmit(event) {
+  async function onFormSubmit(event) {
     event.preventDefault();
-    console.log(title, description, price);
+
+    const productsBody = {
+      title: title,
+      description: description,
+      image: image,
+      price: price,
+    };
+
+    const response = await fetch("http://localhost:3000/products", {
+      method: "POST",
+      body: JSON.stringify(productsBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
   }
 
   return (
@@ -24,6 +41,15 @@ function AddProducts() {
             name="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+          />
+        </div>
+        <div className="flex gap-x-2">
+          <p>Image</p>
+          <CustomInput
+            type={"text"}
+            name="image"
+            value={image}
+            onChange={(event) => setImage(event.target.value)}
           />
         </div>
         <div className="flex gap-x-2">

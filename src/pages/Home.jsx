@@ -1,7 +1,19 @@
+import { useEffect, useState } from "react";
 import Cards from "../components/Cards";
-import Products from "../mock/products.json";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const response = await fetch("http://localhost:3000/products");
+    const data = await response.json();
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className="m-5">
       <nav className="flex w-full justify-between">
@@ -24,7 +36,7 @@ function Home() {
         </div>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {Products.map((product, i) => {
+        {products.map((product, i) => {
           const { title, description, image, price } = product;
           return (
             <Cards

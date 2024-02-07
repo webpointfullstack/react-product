@@ -14,10 +14,26 @@ function EditProducts() {
   const [title, setTitle] = useState(product.title);
   const [description, setDescription] = useState(product.description);
   const [price, setPrice] = useState(product.price);
+  const [image, setImage] = useState(product.image);
 
-  function onFormSubmit(event) {
+  async function onFormSubmit(event) {
     event.preventDefault();
-    console.log(title, description, price);
+
+    const productsBody = {
+      title: title,
+      description: description,
+      image: image,
+      price: price,
+    };
+
+    const response = await fetch("http://localhost:3000/products/" + id, {
+      method: "PUT",
+      body: JSON.stringify(productsBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
     navigate("/admin");
   }
 
@@ -32,6 +48,15 @@ function EditProducts() {
             name="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+          />
+        </div>
+        <div className="flex gap-x-2">
+          <p>Image</p>
+          <CustomInput
+            type={"text"}
+            name="image"
+            value={image}
+            onChange={(event) => setImage(event.target.value)}
           />
         </div>
         <div className="flex gap-x-2">
