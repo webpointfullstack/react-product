@@ -9,12 +9,23 @@ function EditProducts() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const product = Products.find((product) => product.id === id);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
 
-  const [title, setTitle] = useState(product.title);
-  const [description, setDescription] = useState(product.description);
-  const [price, setPrice] = useState(product.price);
-  const [image, setImage] = useState(product.image);
+  async function getProductById() {
+    const response = await fetch("http://localhost:3000/products/" + id);
+    const data = await response.json();
+    setTitle(data.product.title);
+    setDescription(data.product.description);
+    setPrice(data.product.price);
+    setImage(data.product.image);
+  }
+
+  useEffect(() => {
+    getProductById();
+  }, []);
 
   async function onFormSubmit(event) {
     event.preventDefault();
@@ -34,6 +45,7 @@ function EditProducts() {
       },
     });
     const data = await response.json();
+
     navigate("/admin");
   }
 
