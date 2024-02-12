@@ -3,7 +3,6 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Products from "../mock/products.json";
 
 function EditProducts() {
   const { id } = useParams();

@@ -13,19 +13,22 @@ function AddProducts() {
   async function onFormSubmit(event) {
     event.preventDefault();
 
-    const productsBody = {
-      title: title,
-      description: description,
-      image: image,
-      price: price,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("image", image);
+    formData.append("description", description);
+    formData.append("price", price);
+
+    // const productsBody = {
+    //   title: title,
+    //   description: description,
+    //   image: image,
+    //   price: price,
+    // };
 
     const response = await fetch("http://localhost:3000/products", {
       method: "POST",
-      body: JSON.stringify(productsBody),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: formData,
     });
     const data = await response.json();
   }
@@ -46,10 +49,9 @@ function AddProducts() {
         <div className="flex gap-x-2">
           <p>Image</p>
           <CustomInput
-            type={"text"}
+            type={"file"}
             name="image"
-            value={image}
-            onChange={(event) => setImage(event.target.value)}
+            onChange={(event) => setImage(event.target.files[0])}
           />
         </div>
         <div className="flex gap-x-2">
